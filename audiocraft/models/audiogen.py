@@ -91,3 +91,8 @@ class AudioGen(BaseGenModel):
             'cfg_coef': cfg_coef,
             'two_step_cfg': two_step_cfg,
         }
+
+    def to(self, device: str):
+        self.compression_model.to(device)
+        self.lm.to(device)
+        return self

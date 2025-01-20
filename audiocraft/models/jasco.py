@@ -107,6 +107,8 @@ class JASCO(BaseGenModel):
         Returns:
             torch.Tensor: Generated latents, of shape [B, T, C].
         """
+        i = 0
+        prompt_list = attributes[0].text['description']
         total_gen_len = int(self.duration * self.frame_rate)
         max_prompt_len = int(min(self.duration, self.max_duration) * self.frame_rate)
 
@@ -129,6 +131,7 @@ class JASCO(BaseGenModel):
 
         # generate by sampling from the LM
         with self.autocast:
+            attributes[0].text['description'] = prompt_list[0]
             total_gen_len = math.ceil(self.duration * self.compression_model.frame_rate)
             return self.lm.generate(
                    prompt_tokens, attributes,
